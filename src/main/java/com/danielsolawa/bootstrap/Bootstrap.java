@@ -1,7 +1,9 @@
 package com.danielsolawa.bootstrap;
 
 import com.danielsolawa.domain.Category;
+import com.danielsolawa.domain.Customer;
 import com.danielsolawa.repository.CategoryRepository;
+import com.danielsolawa.repository.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -11,17 +13,40 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Slf4j
-public class Boostrap implements CommandLineRunner {
+public class Bootstrap implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
+    private final CustomerRepository customerRepository;
 
-    public Boostrap(CategoryRepository categoryRepository) {
+    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
         this.categoryRepository = categoryRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
     public void run(String... strings) throws Exception {
         loadCategories();
+        loadCustomers();
+    }
+
+    private void loadCustomers() {
+        Customer customer1 = new Customer();
+        customer1.setFirstname("Taylor");
+        customer1.setLastname("Hill");
+
+        Customer customer2 = new Customer();
+        customer2.setFirstname("Jessica");
+        customer2.setLastname("Alba");
+
+        Customer customer3 = new Customer();
+        customer3.setFirstname("Jasmine");
+        customer3.setLastname("Tooks");
+
+
+
+        customerRepository.save(customer1);
+        customerRepository.save(customer2);
+        customerRepository.save(customer3);
     }
 
     private void loadCategories() {
