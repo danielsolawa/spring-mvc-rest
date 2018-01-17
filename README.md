@@ -1,0 +1,2 @@
+# spring-mvc-rest [![CircleCI](https://circleci.com/gh/danielsolawa/spring-mvc-rest.svg?style=svg)](https://circleci.com/gh/danielsolawa/spring-mvc-rest) [![codecov](https://codecov.io/gh/danielsolawa/spring-mvc-rest/branch/master/graph/badge.svg)](https://codecov.io/gh/danielsolawa/spring-mvc-rest)
+Spring MVC Rest sample application
