@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
  * Created by Daniel Solawa on 2018-01-17.
  */
 @Controller
-@RequestMapping("/api/v1/customers")
+@RequestMapping(CustomerController.BASE_URL)
 public class CustomerController {
 
+    public static final String BASE_URL = "/api/v1/customers";
     private final CustomerService customerService;
-
 
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
@@ -43,6 +43,13 @@ public class CustomerController {
     public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable String id, @RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<CustomerDTO>(
                 customerService.updateCustomer(Long.valueOf(id), customerDTO), HttpStatus.OK);
+    }
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<CustomerDTO> patchCustomer(@PathVariable String id, @RequestBody CustomerDTO customerDTO) {
+        return new ResponseEntity<CustomerDTO>(
+                customerService.updateCustomerPatch(Long.valueOf(id), customerDTO), HttpStatus.OK);
     }
 
 

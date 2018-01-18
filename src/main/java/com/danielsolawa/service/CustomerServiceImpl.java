@@ -1,5 +1,6 @@
 package com.danielsolawa.service;
 
+import com.danielsolawa.controller.CustomerController;
 import com.danielsolawa.domain.Customer;
 import com.danielsolawa.mapper.CustomerMapper;
 import com.danielsolawa.model.CustomerDTO;
@@ -34,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .map(customer -> {
                     CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-                    customerDTO.setCustomerUrl("/api/v1/customers/" + customer.getId());
+                    customerDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
                     return customerDTO;
                 })
                 .collect(Collectors.toList());
@@ -45,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findById(id)
                 .map(customer -> {
                     CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-                    customerDTO.setCustomerUrl("/api/v1/customers/" + id);
+                    customerDTO.setCustomerUrl(getCustomerUrl(id));
                     return customerDTO;
                 }).orElseThrow(RuntimeException::new);
 
@@ -73,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO updateCustomerPatch(Long id, CustomerDTO customerDTO) {
-        return customerRepository.findById(id)
+            return customerRepository.findById(id)
                 .map(customer -> {
                     if(customerDTO.getFirstname() != null){
                         customer.setFirstname(customerDTO.getFirstname());
@@ -86,7 +87,7 @@ public class CustomerServiceImpl implements CustomerService {
                     CustomerDTO returnedCustomerDTO =
                             customerMapper.customerToCustomerDTO(customerRepository.save(customer));
 
-                    returnedCustomerDTO.setCustomerUrl("/api/v1/customers/" + id);
+                    returnedCustomerDTO.setCustomerUrl(getCustomerUrl(id));
 
                     return returnedCustomerDTO;
 
@@ -104,5 +105,9 @@ public class CustomerServiceImpl implements CustomerService {
         Customer savedCustomer = customerRepository.save(customerToSave);
 
         return customerMapper.customerToCustomerDTO(savedCustomer);
+    }
+
+    private String getCustomerUrl(Long id){
+        return CustomerController.BASE_URL + "/" + id;
     }
 }
