@@ -1,6 +1,7 @@
 package com.danielsolawa.service;
 
 import com.danielsolawa.domain.Vendor;
+import com.danielsolawa.exception.ResourceNotFoundException;
 import com.danielsolawa.mapper.VendorMapper;
 import com.danielsolawa.model.VendorDTO;
 import com.danielsolawa.repository.VendorRepository;
@@ -60,8 +61,10 @@ public class VendorServiceImplTest {
         assertThat(vendorDTOs, hasSize(3));
     }
 
+
+
     @Test
-    public void testGetVendorById() throws Exception {
+    public void testGetVendorByIdHappyPath() throws Exception {
         Vendor vendor = new Vendor();
         vendor.setId(ID);
         vendor.setName(NAME);
@@ -80,6 +83,24 @@ public class VendorServiceImplTest {
         assertThat(vendor.getId(), equalTo(vendorDTO.getId()));
         assertThat(vendor.getName(), equalTo(vendorDTO.getName()));
         assertNotNull(vendorDTO.getVendorUrl());
+
+
+    }
+
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void testGetVendorByIdFailure() throws Exception {
+
+        //given
+        when(vendorRepository.findById(anyLong())).thenThrow(ResourceNotFoundException.class);
+
+        //when
+        VendorDTO vendorDTO = vendorService.getVendorById(ID);
+
+        //then
+        verify(vendorRepository, times(1)).findById(anyLong());
+
+
 
 
     }
