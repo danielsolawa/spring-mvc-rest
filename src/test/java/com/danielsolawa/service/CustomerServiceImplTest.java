@@ -171,4 +171,15 @@ public class CustomerServiceImplTest {
         verify(customerRepository, times(1)).findById(anyLong());
         assertNull(customerDTO);
     }
+
+
+
+    @Test
+    public void testDeleteById() throws Exception {
+
+        customerService.deleteById(ID);
+
+        verify(customerRepository, times(1)).deleteById(anyLong());
+
+    }
 }

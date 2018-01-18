@@ -93,6 +93,11 @@ public class CustomerServiceImpl implements CustomerService {
                 }).orElseThrow(RuntimeException::new);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        customerRepository.deleteById(id);
+    }
+
 
     private CustomerDTO saveCustomerDTO(CustomerDTO customerDTO){
         Customer customerToSave = customerMapper.customerDTOTOCustomer(customerDTO);
