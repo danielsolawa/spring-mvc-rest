@@ -2,6 +2,7 @@ package com.danielsolawa.service;
 
 import com.danielsolawa.controller.CustomerController;
 import com.danielsolawa.domain.Customer;
+import com.danielsolawa.exception.ResourceNotFoundException;
 import com.danielsolawa.mapper.CustomerMapper;
 import com.danielsolawa.model.CustomerDTO;
 import com.danielsolawa.repository.CustomerRepository;
@@ -43,20 +44,20 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO getCustomerById(Long id) {
-        return customerRepository.findById(id)
+        /*return customerRepository.findById(id)
                 .map(customer -> {
                     CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
                     customerDTO.setCustomerUrl(getCustomerUrl(id));
                     return customerDTO;
-                }).orElseThrow(RuntimeException::new);
+                }).orElseThrow(ResourceNotFoundException::new);*/
 
-        /*
+
         return customerRepository.findById(id)
                 .map(customerMapper::customerToCustomerDTO)
                 .map(customerDTO -> {
                     customerDTO.setCustomerUrl("/api/v1/customers/" + id);
                     return customerDTO;
-                }).orElseThrow(RuntimeException::new);*/
+                }).orElseThrow(ResourceNotFoundException::new);
 
     }
 
@@ -91,7 +92,7 @@ public class CustomerServiceImpl implements CustomerService {
 
                     return returnedCustomerDTO;
 
-                }).orElseThrow(RuntimeException::new);
+                }).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override

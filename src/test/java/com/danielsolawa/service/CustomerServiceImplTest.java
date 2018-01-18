@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.context.config.ResourceNotFoundException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -158,11 +159,11 @@ public class CustomerServiceImplTest {
 
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = ResourceNotFoundException.class)
     public void testUpdateCustomerPatchFailure() throws Exception {
 
         //given
-        when(customerRepository.findById(anyLong())).thenThrow(RuntimeException.class);
+        when(customerRepository.findById(anyLong())).thenThrow(ResourceNotFoundException.class);
 
         //when
         CustomerDTO customerDTO = customerService.updateCustomerPatch(ID, new CustomerDTO());

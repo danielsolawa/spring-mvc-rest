@@ -1,5 +1,6 @@
 package com.danielsolawa.controller;
 
+import com.danielsolawa.exception.ResourceNotFoundException;
 import com.danielsolawa.model.CustomerDTO;
 import com.danielsolawa.service.CustomerService;
 import org.junit.Before;
@@ -16,7 +17,6 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
@@ -24,7 +24,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
 /**
  * Created by Daniel Solawa on 2018-01-17.
@@ -35,6 +34,8 @@ public class CustomerControllerTest extends AbstractControllerTest{
     public static final String FIRSTNAME = "Taylor";
     public static final String LASTNAME = "Hill";
     public static final long ID = 1L;
+
+
     MockMvc mockMvc;
 
     @InjectMocks
@@ -46,7 +47,10 @@ public class CustomerControllerTest extends AbstractControllerTest{
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        mockMvc = MockMvcBuilders
+                .standaloneSetup(customerController)
+                .setControllerAdvice(new RestExceptionHandler())
+                .build();
     }
 
     @Test
@@ -68,7 +72,7 @@ public class CustomerControllerTest extends AbstractControllerTest{
     }
 
     @Test
-    public void testGetCustomerById() throws Exception {
+    public void testGetCustomerByIdHappyPath() throws Exception {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setId(ID);
         customerDTO.setFirstname(FIRSTNAME);
@@ -88,6 +92,22 @@ public class CustomerControllerTest extends AbstractControllerTest{
 
         verify(customerService, times(1)).getCustomerById(anyLong());
     }
+
+
+    @Test
+    public void testGetCustomerByIdFailure() throws Exception {
+        //given
+        when(customerService.getCustomerById(anyLong())).thenThrow(ResourceNotFoundException.class);
+
+        //when
+        mockMvc.perform(get(CustomerController.BASE_URL + "/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        verify(customerService, times(1)).getCustomerById(anyLong());
+    }
+
+
 
     @Test
     public void testCreateNewCustomer() throws Exception {
