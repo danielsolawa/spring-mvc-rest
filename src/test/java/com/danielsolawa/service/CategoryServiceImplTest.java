@@ -66,6 +66,7 @@ public class CategoryServiceImplTest {
         category.setId(ID);
         category.setName(NAME);
 
+
         //given
         when(categoryRepository.getOne(anyLong())).thenReturn(category);
 

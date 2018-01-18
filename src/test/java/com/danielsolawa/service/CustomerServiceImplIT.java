@@ -13,6 +13,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
+import java.util.Optional;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
@@ -55,6 +57,7 @@ public class CustomerServiceImplIT {
         Customer customer = new Customer();
         customer.setFirstname("Gal");
         customer.setLastname("Gadot");
+
 
         //saving new customer
         Customer savedCustomer = customerRepository.save(customer);

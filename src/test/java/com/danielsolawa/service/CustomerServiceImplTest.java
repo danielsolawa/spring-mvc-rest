@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
@@ -66,18 +67,22 @@ public class CustomerServiceImplTest {
         customer.setFirstname(FIRSTNAME);
         customer.setLastname(LASTNAME);
 
+        Optional<Customer> customerOptional = Optional.of(customer);
+
         //given
-        when(customerRepository.getOne(anyLong())).thenReturn(customer);
+        when(customerRepository.findById(anyLong())).thenReturn(customerOptional);
 
         //when
         CustomerDTO customerDTO = customerService.getCustomerById(ID);
 
         //then
-        verify(customerRepository, times(1)).getOne(anyLong());
+        verify(customerRepository, times(1)).findById(anyLong());
 
+        assertNotNull(customerDTO.getCustomerUrl());
         assertThat(customer.getId(), equalTo(customerDTO.getId()));
         assertThat(customer.getFirstname(), equalTo(customerDTO.getFirstname()));
         assertThat(customer.getLastname(), equalTo(customerDTO.getLastname()));
+
 
     }
 
