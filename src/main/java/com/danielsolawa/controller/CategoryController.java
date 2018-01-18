@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by Daniel Solawa on 2018-01-17.
  */
 
-@Controller
+@RestController
 @RequestMapping(CategoryController.BASE_URL)
 public class CategoryController {
 
@@ -25,26 +25,27 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<CategoryListDTO> getAllCategories(){
-        return new ResponseEntity<CategoryListDTO>(
-                new CategoryListDTO(categoryService.getAllCategories()), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public CategoryListDTO getAllCategories(){
+        return new CategoryListDTO(categoryService.getAllCategories());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<CategoryDTO> getById(@PathVariable String id){
-        return new ResponseEntity<CategoryDTO>(categoryService.getById(Long.valueOf(id)), HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public CategoryDTO getById(@PathVariable String id){
+        return categoryService.getById(Long.valueOf(id));
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> createNewCategory(@RequestBody CategoryDTO categoryDTO){
-
-        return new ResponseEntity<CategoryDTO>(categoryService.createNewCategory(categoryDTO), HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    public CategoryDTO createNewCategory(@RequestBody CategoryDTO categoryDTO){
+        return categoryService.createNewCategory(categoryDTO);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable String id, @RequestBody CategoryDTO categoryDTO){
+    @ResponseStatus(HttpStatus.OK)
+    public CategoryDTO updateCategory(@PathVariable String id, @RequestBody CategoryDTO categoryDTO){
 
-        return new ResponseEntity<CategoryDTO>(
-                categoryService.updateCustomer(Long.valueOf(id), categoryDTO), HttpStatus.OK);
+        return categoryService.updateCustomer(Long.valueOf(id), categoryDTO);
     }
 }
