@@ -49,6 +49,8 @@ public class Bootstrap implements CommandLineRunner {
         vendorRepository.save(vendor1);
         vendorRepository.save(vendor2);
         vendorRepository.save(vendor3);
+
+        log.info("Vendors loaded " + vendorRepository.count());
     }
 
     private void loadCustomers() {
@@ -69,6 +71,8 @@ public class Bootstrap implements CommandLineRunner {
         customerRepository.save(customer1);
         customerRepository.save(customer2);
         customerRepository.save(customer3);
+
+        log.info("Customers loaded " + customerRepository.count());
     }
 
     private void loadCategories() {

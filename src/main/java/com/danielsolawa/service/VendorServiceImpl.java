@@ -1,5 +1,6 @@
 package com.danielsolawa.service;
 
+import com.danielsolawa.controller.VendorController;
 import com.danielsolawa.domain.Vendor;
 import com.danielsolawa.exception.ResourceNotFoundException;
 import com.danielsolawa.mapper.VendorMapper;
@@ -34,7 +35,7 @@ public class VendorServiceImpl implements VendorService {
                 .stream()
                 .map(vendor -> {
                     VendorDTO vendorDTO = vendorMapper.vendorToVendorDTO(vendor);
-                    vendorDTO.setVendorUrl("/api/v1/vendors/" + vendor.getId());
+                    vendorDTO.setVendorUrl(getProperUrl(vendor.getId()));
 
                     return vendorDTO;
                 })
@@ -47,7 +48,7 @@ public class VendorServiceImpl implements VendorService {
                 .findById(id)
                 .map(vendor -> {
                     VendorDTO vendorDTO = vendorMapper.vendorToVendorDTO(vendor);
-                    vendorDTO.setVendorUrl("/api/v1/vendors/" + id);
+                    vendorDTO.setVendorUrl(getProperUrl(id));
 
                     return vendorDTO;
                 }).orElseThrow(ResourceNotFoundException::new);
@@ -74,7 +75,7 @@ public class VendorServiceImpl implements VendorService {
                     }
 
                     VendorDTO savedVendorDTO = vendorMapper.vendorToVendorDTO(vendorRepository.save(vendor));
-                    savedVendorDTO.setVendorUrl("/api/v1/vendors/" + id);
+                    savedVendorDTO.setVendorUrl(getProperUrl(id));
 
                     return savedVendorDTO;
 
@@ -92,5 +93,10 @@ public class VendorServiceImpl implements VendorService {
         Vendor savedVendor = vendorRepository.save(vendor);
 
         return vendorMapper.vendorToVendorDTO(savedVendor);
+    }
+
+
+    private String getProperUrl(Long id){
+        return VendorController.BASE_URL + "/" + id;
     }
 }
