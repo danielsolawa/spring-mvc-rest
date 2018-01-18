@@ -129,4 +129,32 @@ public class CustomerServiceImplTest {
         assertThat(customer.getFirstname(), equalTo(customerDTO.getFirstname()));
         assertThat(customer.getLastname(), equalTo(customerDTO.getLastname()));
     }
+
+    @Test
+    public void testUpdateCustomerPatch() throws Exception {
+        Customer customer = new Customer();
+        customer.setId(ID);
+        customer.setFirstname(FIRSTNAME);
+        customer.setLastname(LASTNAME);
+
+        Optional<Customer> customerOptional = Optional.of(customer);
+
+        //given
+        when(customerRepository.findById(anyLong())).thenReturn(customerOptional);
+        when(customerRepository.save(any())).thenReturn(customer);
+
+
+        //when
+        CustomerDTO customerDTO = customerService.updateCustomerPatch(ID, new CustomerDTO());
+
+        //then
+        verify(customerRepository, times(1)).findById(anyLong());
+        verify(customerRepository, times(1)).save(any());
+
+        assertThat(customer.getId(), equalTo(customerDTO.getId()));
+        assertThat(customer.getFirstname(), equalTo(customerDTO.getFirstname()));
+        assertThat(customer.getLastname(), equalTo(customerDTO.getLastname()));
+
+
+    }
 }
