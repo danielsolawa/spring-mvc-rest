@@ -3,6 +3,7 @@ package com.danielsolawa.service;
 import com.danielsolawa.bootstrap.Bootstrap;
 import com.danielsolawa.domain.Customer;
 import com.danielsolawa.mapper.CustomerMapper;
+import com.danielsolawa.model.CustomerDTO;
 import com.danielsolawa.repository.CategoryRepository;
 import com.danielsolawa.repository.CustomerRepository;
 import org.junit.Before;
@@ -17,9 +18,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by Daniel Solawa on 2018-01-17.
@@ -104,7 +103,29 @@ public class CustomerServiceImplIT {
 
     }
 
+    @Test
+    public void testDeleteById() throws Exception {
+        //create new customer
+        Customer customer = new Customer();
+        customer.setFirstname("John");
+        customer.setLastname("Snow");
 
+        Customer savedCustomer = customerRepository.save(customer);
+
+        assertNotNull(savedCustomer);
+        Long id = savedCustomer.getId();
+
+        //delete customer
+        customerService.deleteById(id);
+
+        //search for deleted customer
+        Optional<Customer> deletedCustomer = customerRepository.findById(id);
+
+        assertTrue(!deletedCustomer.isPresent());
+
+
+
+    }
 
     private Long getId(){
         return customerRepository.findAll().get(0).getId();
