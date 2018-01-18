@@ -3,9 +3,9 @@ package com.danielsolawa.service;
 import com.danielsolawa.bootstrap.Bootstrap;
 import com.danielsolawa.domain.Customer;
 import com.danielsolawa.mapper.CustomerMapper;
-import com.danielsolawa.model.CustomerDTO;
 import com.danielsolawa.repository.CategoryRepository;
 import com.danielsolawa.repository.CustomerRepository;
+import com.danielsolawa.repository.VendorRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +35,9 @@ public class CustomerServiceImplIT {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    VendorRepository vendorRepository;
+
     CustomerService customerService;
 
     @Before
@@ -43,7 +46,7 @@ public class CustomerServiceImplIT {
         System.out.println("Size " + customerRepository.findAll().size());
 
         //prepare data for testing
-        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository);
+        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository, vendorRepository);
         bootstrap.run();
 
         customerService = new CustomerServiceImpl(CustomerMapper.INSTANCE, customerRepository);

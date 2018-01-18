@@ -2,8 +2,10 @@ package com.danielsolawa.bootstrap;
 
 import com.danielsolawa.domain.Category;
 import com.danielsolawa.domain.Customer;
+import com.danielsolawa.domain.Vendor;
 import com.danielsolawa.repository.CategoryRepository;
 import com.danielsolawa.repository.CustomerRepository;
+import com.danielsolawa.repository.VendorRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,16 +19,36 @@ public class Bootstrap implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
     private final CustomerRepository customerRepository;
+    private final VendorRepository vendorRepository;
 
-    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
+    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository, VendorRepository vendorRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
     public void run(String... strings) throws Exception {
         loadCategories();
         loadCustomers();
+        loadVendors();
+
+
+    }
+
+    private void loadVendors() {
+        Vendor vendor1 = new Vendor();
+        vendor1.setName("John");
+
+        Vendor vendor2 = new Vendor();
+        vendor2.setName("Mark");
+
+        Vendor vendor3 = new Vendor();
+        vendor3.setName("Tom");
+
+        vendorRepository.save(vendor1);
+        vendorRepository.save(vendor2);
+        vendorRepository.save(vendor3);
     }
 
     private void loadCustomers() {

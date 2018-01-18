@@ -2,18 +2,16 @@ package com.danielsolawa.service;
 
 import com.danielsolawa.bootstrap.Bootstrap;
 import com.danielsolawa.domain.Category;
-import com.danielsolawa.domain.Customer;
 import com.danielsolawa.mapper.CategoryMapper;
 import com.danielsolawa.repository.CategoryRepository;
 import com.danielsolawa.repository.CustomerRepository;
+import com.danielsolawa.repository.VendorRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -37,12 +35,15 @@ public class CategoryServiceImplIT {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    VendorRepository vendorRepository;
+
     Bootstrap bootstrap;
 
     @Before
     public void setUp() throws Exception {
         //init data for testing
-        bootstrap = new Bootstrap(categoryRepository, customerRepository);
+        bootstrap = new Bootstrap(categoryRepository, customerRepository, vendorRepository);
 
         bootstrap.run();
 
