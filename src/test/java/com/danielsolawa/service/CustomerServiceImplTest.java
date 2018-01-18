@@ -157,4 +157,18 @@ public class CustomerServiceImplTest {
 
 
     }
+
+    @Test(expected = RuntimeException.class)
+    public void testUpdateCustomerPatchFailure() throws Exception {
+
+        //given
+        when(customerRepository.findById(anyLong())).thenThrow(RuntimeException.class);
+
+        //when
+        CustomerDTO customerDTO = customerService.updateCustomerPatch(ID, new CustomerDTO());
+
+        //then
+        verify(customerRepository, times(1)).findById(anyLong());
+        assertNull(customerDTO);
+    }
 }
