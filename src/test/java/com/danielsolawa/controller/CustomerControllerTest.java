@@ -137,4 +137,16 @@ public class CustomerControllerTest extends AbstractControllerTest{
 
         verify(customerService, times(1)).updateCustomer(anyLong(), any());
     }
+
+
+    @Test
+    public void testDeleteCustomer() throws Exception {
+
+        mockMvc.perform(delete(URL_TEMPLATE + "/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(customerService, times(1)).deleteById(anyLong());
+
+    }
 }
