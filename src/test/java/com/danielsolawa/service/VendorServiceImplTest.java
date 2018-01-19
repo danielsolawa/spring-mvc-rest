@@ -19,6 +19,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,13 +52,15 @@ public class VendorServiceImplTest {
         List<Vendor> vendors = Arrays.asList(new Vendor(), new Vendor(), new Vendor());
 
         //given
-        when(vendorRepository.findAll()).thenReturn(vendors);
+        given(vendorRepository.findAll()).willReturn(vendors);
+        //when(vendorRepository.findAll()).thenReturn(vendors);
 
         //when
         List<VendorDTO> vendorDTOs = vendorService.getVendorList();
 
         //then
-        verify(vendorRepository, times(1)).findAll();
+        then(vendorRepository).should().findAll();
+        //verify(vendorRepository, times(1)).findAll();
 
         assertThat(vendorDTOs, hasSize(3));
     }
