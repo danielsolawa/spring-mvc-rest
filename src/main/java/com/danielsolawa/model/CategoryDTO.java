@@ -1,5 +1,6 @@
 package com.danielsolawa.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -7,6 +8,9 @@ import lombok.Data;
  */
 @Data
 public class CategoryDTO {
+
+    @ApiModelProperty(value = "just an id", required = false)
     private Long id;
+    @ApiModelProperty(value = "a name for the category", required = true)
     private String name;
 }
